@@ -18,7 +18,7 @@
     --corEspacoBranco: #d1d1d1;
     --corPecaPreta: black;
     --corPecaBranca: white;
-    --corPecaCaminho: yellow;
+    --corPecaCaminho: rgba(222, 222, 26, 0.77);
 }
 
 body{
@@ -228,12 +228,33 @@ main{
 
 .pecaPreta{
     background-color: var(--corPecaPreta);
+    cursor: pointer;
 }
 
 .pecaBranca{
     background-color: var(--corPecaBranca);
+    cursor: pointer;
 }
 
 .caminho{
     background-color: var(--corPecaCaminho);
+    cursor: pointer;
+}
+
+.pecaBranca.dama{
+    background-image: url("img/coroaPreta.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.pecaPreta.dama{
+    background-image: url("img/coroaBranca.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.injogavel{
+    pointer-events: none;
 }

@@ -1,20 +1,21 @@
 
-const debug = false;
+const debug = true;
 const tabuleiro = document.querySelector("#tabuleiro");
 
 let bot;
 let obrigatorioComer;
 let podeComerParaTras;
 
-let arrayPecasPretas = [];
-let arrayPecasBrancas = [];
+let contadorPecasPretas = 0;
+let contadorPecasBrancas = 0;
 let arrayTabuleiro = [];
+let vezJogada = "preta";
 
 if (debug) {
     comecarJogo()
     bot = false
     obrigatorioComer = false
-    podeComerParaTras = false
+    podeComerParaTras = true
 }
 
 function comecarJogo() {
@@ -24,6 +25,8 @@ function comecarJogo() {
     configurarVariaveis();
 
     iniciarTabuleiro();
+
+    mudarVez();
 
 }
 
@@ -79,10 +82,10 @@ function iniciarTabuleiro() {
                 document.querySelector(`.L${c}-${d}`).appendChild(peca);
 
                 if (c < 3) {
-                    arrayPecasPretas.push([c, d]);
+                    contadorPecasPretas++
                 }
                 if (c > 4) {
-                    arrayPecasBrancas.push([c, d]);
+                    contadorPecasBrancas++
                 }
 
             } else {
@@ -106,7 +109,7 @@ function pecaSelecionada(e) {
 }
 
 function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
-    
+
     let direcoes = [
         [1, 1],
         [1, -1],
@@ -137,7 +140,7 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
                     continue;
                 }
             }
-            
+
             if (arrayTabuleiro[linha + direcoes[c][0]][coluna + direcoes[c][1]] != "") {
                 if (arrayTabuleiro[linha + direcoes[c][0]][coluna + direcoes[c][1]].classList.contains(corPeca == "branca" ? "pecaPreta" : "pecaBranca")) {
 
@@ -162,14 +165,14 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
                     }
 
                     if (arrayTabuleiro[linha + (direcoes[c][0] * 2)][coluna + (direcoes[c][1] * 2)] == "") {
-                        
+
                         let arrayComerSequencia = comerEmSequencia([linha, coluna], (elemento.classList.contains("normal") ? 'normal' : "dama"), copiarArray(arrayTabuleiro), corPeca)
 
-                        if(arrayComerSequencia.length == 1){
+                        if (arrayComerSequencia.length == 1) {
                             idCaminhosComerPeca.push(caminhosPossiveis.push([[linha + (direcoes[c][0] * 2), coluna + (direcoes[c][1] * 2)], [[linha + direcoes[c][0], coluna + direcoes[c][1]]]]) - 1)
-                        }else{
+                        } else {
 
-                            for(let e = 0; e < arrayComerSequencia.length; e++){
+                            for (let e = 0; e < arrayComerSequencia.length; e++) {
                                 idCaminhosComerPeca.push(caminhosPossiveis.push(arrayComerSequencia[e]) - 1)
                             }
 
@@ -200,6 +203,97 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
 
         }
 
+    } else if (elemento.classList.contains("dama")) {
+
+        for (let c = 0; c < 4; c++) {
+            let tempLinha = linha
+            let tempColuna = coluna
+            while (tempLinha < 7 && tempLinha >= 0 && tempColuna < 7 && tempColuna >= 0) {
+
+                tempLinha += direcoes[c][0]
+                tempColuna += direcoes[c][1]
+
+                console.log(`Linha: ${tempLinha} - Coluna: ${tempColuna}`)
+
+
+                if (tempLinha > 7 || tempLinha < 0) {
+                    continue;
+                }
+
+                if (tempColuna > 7 || tempColuna < 0) {
+                    continue;
+                }
+
+                if (ignorar[0] != -1) {
+                    if (tempLinha == ignorar[0] && tempColuna == ignorar[1]) {
+                        continue;
+                    }
+                }
+
+                
+
+                if (arrayTabuleiro[tempLinha][tempColuna] != "") {
+
+                    break
+
+                    // Logica de comer da dama
+                    if (arrayTabuleiro[tempLinha][tempColuna].classList.contains(corPeca == "branca" ? "pecaPreta" : "pecaBranca")) {
+
+                        if (linha + (direcoes[c][0] * 2) > 7 || linha + (direcoes[c][0] * 2) < 0) {
+                            continue;
+                        }
+
+                        if (coluna + (direcoes[c][1] * 2) > 7 || coluna + (direcoes[c][1] * 2) < 0) {
+                            continue;
+                        }
+
+                        if (!podeComerParaTras) {
+
+                            if (direcoes[c][0] < 0 && corPeca == "preta") {
+                                continue
+                            }
+
+                            if (direcoes[c][0] > 0 && corPeca == "branca") {
+                                continue
+                            }
+
+                        }
+
+                        if (arrayTabuleiro[linha + (direcoes[c][0] * 2)][coluna + (direcoes[c][1] * 2)] == "") {
+
+                            let arrayComerSequencia = comerEmSequencia([linha, coluna], (elemento.classList.contains("normal") ? 'normal' : "dama"), copiarArray(arrayTabuleiro), corPeca)
+
+                            if (arrayComerSequencia.length == 1) {
+                                idCaminhosComerPeca.push(caminhosPossiveis.push([[linha + (direcoes[c][0] * 2), coluna + (direcoes[c][1] * 2)], [[linha + direcoes[c][0], coluna + direcoes[c][1]]]]) - 1)
+                            } else {
+
+                                for (let e = 0; e < arrayComerSequencia.length; e++) {
+                                    idCaminhosComerPeca.push(caminhosPossiveis.push(arrayComerSequencia[e]) - 1)
+                                }
+
+                            }
+
+
+                            continue;
+                        }
+
+
+
+
+                    }
+                }
+
+                if (arrayTabuleiro[tempLinha][tempColuna] == "") {
+                    caminhosPossiveis.push([[tempLinha, tempColuna], []])
+                }
+
+
+            }
+        }
+
+
+
+
     }
 
     if (obrigatorioComer && idCaminhosComerPeca.length > 0) {
@@ -227,7 +321,9 @@ function mostrarCaminhosPossiveis(caminhosPossiveis, pecaSelecionada) {
     let pecaCaminhoPossivel;
 
     for (let c = 0; c < caminhosPossiveis.length; c++) {
-
+        if (document.querySelector(`.L${caminhosPossiveis[c][0][0]}-${caminhosPossiveis[c][0][1]}`).children.length > 0) {
+            continue;
+        }
         pecaCaminhoPossivel = document.createElement("div")
         pecaCaminhoPossivel.classList.add("peca")
         pecaCaminhoPossivel.classList.add("caminho")
@@ -254,56 +350,80 @@ function fazerMovimento(destino, peca) {
     let linhaOrigem = parseInt(peca.parentNode.classList[1].slice(1, 2))
     let colunaOrigem = parseInt(peca.parentNode.classList[1].slice(3, 4))
 
-    let localizaoPecaNaArray
-    if (peca.classList.contains("pecaBranca")) {
+    for (let c = 0; c < destino[1].length; c++) {
 
-        localizaoPecaNaArray = arrayPecasBrancas.findIndex(array => JSON.stringify(array) == JSON.stringify([linhaOrigem, colunaOrigem]))
-        arrayPecasBrancas[localizaoPecaNaArray] = destino
-
-    } else {
-
-        localizaoPecaNaArray = arrayPecasPretas.findIndex(array => JSON.stringify(array) == JSON.stringify([linhaOrigem, colunaOrigem]))
-        arrayPecasPretas[localizaoPecaNaArray] = destino
+        if (destino[1][c][0] == 6 && peca.classList.contains("pecaPreta")) {
+            peca.classList.remove("normal");
+            peca.classList.add("dama");
+        } else if (destino[1][c][0] == 1 && peca.classList.contains("pecaBranca")) {
+            peca.classList.remove("normal");
+            peca.classList.add("dama");
+        }
 
     }
 
-    for(let c = 0; c < destino[1].length; c++){
-        
+    let localizaoPecaNaArray
+    if (peca.classList.contains("pecaBranca")) {
+
+        if (destino[0][0] == 0) {
+            peca.classList.remove("normal");
+            peca.classList.add("dama");
+        }
+
+    } else {
+
+        if (destino[0][0] == 7) {
+            peca.classList.remove("normal");
+            peca.classList.add("dama");
+        }
+
+    }
+
+    for (let c = 0; c < destino[1].length; c++) {
+
         arrayTabuleiro[destino[1][c][0]][destino[1][c][1]] = ''
-        
+
         let local = [destino[1][c][0], destino[1][c][1]]
 
         if (peca.classList.contains("pecaBranca")) {
 
-            arrayPecasPretas.splice(arrayPecasPretas.findIndex(array => JSON.stringify(array) == JSON.stringify(local)), 1);
+            contadorPecasPretas--
 
         } else {
 
-            arrayPecasBrancas.splice(arrayPecasBrancas.findIndex(array => JSON.stringify(array) == JSON.stringify(local)), 1);
+            contadorPecasBrancas--
 
         }
 
         document.querySelector(`.L${destino[1][c][0]}-${destino[1][c][1]}`).innerHTML = ""
 
     }
-    
+
+
     arrayTabuleiro[linhaOrigem][colunaOrigem] = "";
     arrayTabuleiro[destino[0][0]][destino[0][1]] = peca;
 
     document.querySelector(`.L${destino[0][0]}-${destino[0][1]}`).appendChild(peca)
     document.querySelector(`.L${linhaOrigem}-${colunaOrigem}`).innerHTML = ""
 
+    mudarVez()
+
+    if (contadorPecasBrancas == 0) {
+        alert(bot ? "Você perdeu!" : "As peças pretas ganharam")
+    } else if (contadorPecasPretas == 0) {
+        alert(bot ? "Você ganhou!" : "As peças brancas ganharam")
+    }
 
 }
 
-function comerEmSequencia(origem, tipoPeca, tabuleiroSimulacao, cor, pecasComidas = []){
+function comerEmSequencia(origem, tipoPeca, tabuleiroSimulacao, cor, pecasComidas = []) {
 
     let tempTabuleiroSimulacao = tabuleiroSimulacao
     let corInimiga = cor == "branca" ? "pecaPreta" : "pecaBranca"
     let arrayComerSequencia = [];
 
-    if(tipoPeca == 'normal'){
-        
+    if (tipoPeca == 'normal') {
+
         let direcoes = [
             [1, 1],
             [-1, 1],
@@ -311,7 +431,7 @@ function comerEmSequencia(origem, tipoPeca, tabuleiroSimulacao, cor, pecasComida
             [1, -1]
         ]
 
-        for(let c = 0; c < 4; c++){
+        for (let c = 0; c < 4; c++) {
 
             if (origem[0] + direcoes[c][0] > 7 || origem[0] + direcoes[c][0] < 0) {
                 continue;
@@ -320,32 +440,32 @@ function comerEmSequencia(origem, tipoPeca, tabuleiroSimulacao, cor, pecasComida
             if (origem[1] + direcoes[c][1] > 7 || origem[1] + direcoes[c][1] < 0) {
                 continue;
             }
-            
-            if(tempTabuleiroSimulacao[origem[0] + direcoes[c][0]][origem[1] + direcoes[c][1]] != ""){
 
-                if(tempTabuleiroSimulacao[origem[0] + direcoes[c][0]][origem[1] + direcoes[c][1]].classList.contains(corInimiga)){
+            if (tempTabuleiroSimulacao[origem[0] + direcoes[c][0]][origem[1] + direcoes[c][1]] != "") {
+
+                if (tempTabuleiroSimulacao[origem[0] + direcoes[c][0]][origem[1] + direcoes[c][1]].classList.contains(corInimiga)) {
 
                     if (origem[0] + (direcoes[c][0] * 2) > 7 || origem[0] + (direcoes[c][0] * 2) < 0) {
                         continue;
                     }
-        
+
                     if (origem[1] + (direcoes[c][1] * 2) > 7 || origem[1] + (direcoes[c][1] * 2) < 0) {
                         continue;
                     }
 
-                    if(tempTabuleiroSimulacao[origem[0] + (direcoes[c][0] * 2)][origem[1] + (direcoes[c][1] * 2)] == ""){
-                        
+                    if (tempTabuleiroSimulacao[origem[0] + (direcoes[c][0] * 2)][origem[1] + (direcoes[c][1] * 2)] == "") {
+
 
                         arrayComerSequencia.push([[origem[0] + (direcoes[c][0] * 2), origem[1] + (direcoes[c][1] * 2)], [[origem[0] + direcoes[c][0], origem[1] + direcoes[c][1]], ...pecasComidas]])
 
                         tempTabuleiroSimulacao[origem[0] + (direcoes[c][0] * 2)][origem[1] + (direcoes[c][1] * 2)] = tempTabuleiroSimulacao[origem[0]][origem[1]]
-                        
+
                         tempTabuleiroSimulacao[origem[0] + direcoes[c][0]][origem[1] + direcoes[c][1]] = ''
-                        
+
                         let tempArray = comerEmSequencia([origem[0] + (direcoes[c][0] * 2), origem[1] + (direcoes[c][1] * 2)], tipoPeca, tempTabuleiroSimulacao, cor, arrayComerSequencia[arrayComerSequencia.length - 1][1]);
 
-                        if(tempArray.length > 0){
-                            for(let d = 0; d < tempArray.length; d++){
+                        if (tempArray.length > 0) {
+                            for (let d = 0; d < tempArray.length; d++) {
                                 arrayComerSequencia.push(tempArray[d])
                             }
                         }
@@ -363,12 +483,42 @@ function comerEmSequencia(origem, tipoPeca, tabuleiroSimulacao, cor, pecasComida
 
 }
 
-function copiarArray(array){
+function mudarVez() {
+    if (debug) return
+    vezJogada = vezJogada == "preta" ? "branca" : "preta"
+    let pecasBrancas = document.querySelectorAll(".pecaBranca")
+    let pecasPretas = document.querySelectorAll(".pecaPreta")
+    if (!bot) {
+        pecasPretas.forEach(peca => {
+            if (peca.classList.contains("injogavel")) {
+                peca.classList.remove("injogavel")
+            }
+        })
+    }
+
+    pecasBrancas.forEach(peca => {
+        if (peca.classList.contains("injogavel")) {
+            peca.classList.remove("injogavel")
+        }
+    })
+
+    if (vezJogada == "preta") {
+        pecasBrancas.forEach(peca => {
+            peca.classList.add("injogavel")
+        })
+    } else if (vezJogada == "branca") {
+        pecasPretas.forEach(peca => {
+            peca.classList.add("injogavel")
+        })
+    }
+}
+
+function copiarArray(array) {
     let copia = []
     array.forEach(elemento => {
-        if(Array.isArray(elemento)){
+        if (Array.isArray(elemento)) {
             copia.push(copiarArray(elemento))
-        }else{
+        } else {
             copia.push(elemento)
         }
     })
