@@ -1,5 +1,5 @@
 
-const debug = true;
+const debug = false;
 const tabuleiro = document.querySelector("#tabuleiro");
 
 let bot;
@@ -212,9 +212,6 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
 
                 tempLinha += direcoes[c][0]
                 tempColuna += direcoes[c][1]
-
-                console.log(`Linha: ${tempLinha} - Coluna: ${tempColuna}`)
-
 
                 if (tempLinha > 7 || tempLinha < 0) {
                     continue;

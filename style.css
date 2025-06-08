@@ -11,9 +11,9 @@
     --corBody: #2c2c2c;
     --corMenu: #383838;
     --corBotaoMenu: #6c6c6c;
-    --larguraPeca: 4em;
-    --larguraEspaco: calc(var(--larguraPeca) * 1.25);
-    --larguraTabuleiro: calc(var(--larguraEspaco) * 8 + 10px);
+    --larguraPeca: calc(var(--larguraEspaco )/ 1.25);
+    --larguraEspaco: calc(var(--larguraTabuleiro) / 8);
+    --larguraTabuleiro: 80svh;
     --corEspacoPreto: #202020;
     --corEspacoBranco: #d1d1d1;
     --corPecaPreta: black;
@@ -257,4 +257,14 @@ main{
 
 .injogavel{
     pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    :root{
+        --larguraTabuleiro: calc(100svw - 3em);
+    }
+    
+    #tabuleiro{
+        width: var(--larguraTabuleiro);
+    }
 }
