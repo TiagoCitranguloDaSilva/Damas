@@ -263,7 +263,30 @@ main{
     :root{
         --larguraTabuleiro: calc(100svw - 3em);
     }
-    
+
+    main{
+        width: max-content;
+    }
+
+    #popUpContainer{
+        width: max-content;
+        margin: 0;
+        padding: 0;
+        width: inherit;
+        min-width: inherit;
+    }
+
+    #popUp{
+        min-width: inherit;
+        width: inherit;
+
+    }
+
+    #menu{
+        min-width: inherit;
+        width: max-content;
+    }
+
     #tabuleiro{
         width: var(--larguraTabuleiro);
     }
