@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main>
+        <div id="tabuleiro">
+
+        </div>
+    </main>
+    <div id="popUpContainer">
+        <h1>Damas</h1>
+        <div id="popUp">
+            <div id="menu">
+                <button onclick="novoJogoConfig()">Novo jogo</button>
+                <button onclick="comoJogar()">Como jogar</button>
+            </div>
+            <div id="comoJogar">
+                <h2>Regras básicas</h2>
+                <ul>
+                    <li>Tabuleiro e Peças: Usa-se um tabuleiro de 64 casas (8x8), com peças brancas e pretas. Apenas as casas escuras são usadas no jogo.</li>
+
+                    <li>Movimento das Peças: As peças movem-se diagonalmente, sempre para frente, uma casa por vez.</li>
+
+                    <li>Captura de Peças: Conforme escolha do usuário, uma peça pode capturar a do adversário ao pular sobre ela, desde que a casa seguinte esteja livre.</li>
+
+                    <li>Damas (Peças Coroadas): Ao chegar à última linha do adversário, a peça vira "dama" e pode se mover tanto para frente quanto para trás, várias casas por vez.</li>
+
+                    <li>Objetivo: Vence quem capturar todas as peças do oponente ou bloquear seus movimentos.</li>
+
+                    <li>Obrigatoriedade de Captura: Conforme escolha do usuário, pode haver a regra em que a captura é obrigatória quando possível.</li>
+
+                    <li>Fim do Jogo: O jogo termina quando um jogador perde todas as peças ou fica impossibilitado de jogar.</li>
+                </ul>
+                <button onclick="voltarMenu()">Voltar</button>
+            </div>
+            <div id="novoJogoConfig">
+                <h2>Configurações</h2>
+                <div id="config">
+                    <p><label for="jogadorxjogador">Jogador X Jogador</label><input type="checkbox" name="" id="jogadorxjogador" checked disabled></p>
+                    <p><label for="obrigatorioComer">Comer é obrigatório</label><input type="checkbox" name="" id="obrigatorioComer"></p>
+                    <p><label for="comerParaTras">Pode comer para trás?</label><input type="checkbox" name="" id="comerParaTras"></p>
+                </div>
+                <div id="botoes">
+                    <button onclick="voltarMenu()">Voltar</button>
+                    <button onclick="comecarJogo()">Começar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="code.js"></script>
+</body>
+
+</html>
