@@ -208,6 +208,9 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
         for (let c = 0; c < 4; c++) {
             let tempLinha = linha
             let tempColuna = coluna
+            let achouPeca = false
+            let pecasComidas = []
+            let prePecaComica = []
             while (tempLinha < 7 && tempLinha >= 0 && tempColuna < 7 && tempColuna >= 0) {
 
                 tempLinha += direcoes[c][0]
@@ -227,61 +230,39 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
                     }
                 }
 
-                
+
 
                 if (arrayTabuleiro[tempLinha][tempColuna] != "") {
 
-                    break
+                    // break
 
                     // Logica de comer da dama
                     if (arrayTabuleiro[tempLinha][tempColuna].classList.contains(corPeca == "branca" ? "pecaPreta" : "pecaBranca")) {
+                        achouPeca = true
+                        prePecaComica = [tempLinha, tempColuna]
+                    }
+                }
+                if (arrayTabuleiro[tempLinha][tempColuna] == "" && achouPeca) {
+                    achouPeca = false
 
-                        if (linha + (direcoes[c][0] * 2) > 7 || linha + (direcoes[c][0] * 2) < 0) {
-                            continue;
+                    pecasComidas.push([...prePecaComica])
+                    // let arrayComerSequencia = comerEmSequencia([linha, coluna], (elemento.classList.contains("normal") ? 'normal' : "dama"), copiarArray(arrayTabuleiro), corPeca)
+                    let arrayComerSequencia = [0]
+                    if (arrayComerSequencia.length == 1) {
+                        idCaminhosComerPeca.push(caminhosPossiveis.push([[tempLinha, tempColuna], copiarArray(pecasComidas)]) - 1)
+                    } else {
+                        for (let e = 0; e < arrayComerSequencia.length; e++) {
+                            idCaminhosComerPeca.push(caminhosPossiveis.push(arrayComerSequencia[e]) - 1)
                         }
-
-                        if (coluna + (direcoes[c][1] * 2) > 7 || coluna + (direcoes[c][1] * 2) < 0) {
-                            continue;
-                        }
-
-                        if (!podeComerParaTras) {
-
-                            if (direcoes[c][0] < 0 && corPeca == "preta") {
-                                continue
-                            }
-
-                            if (direcoes[c][0] > 0 && corPeca == "branca") {
-                                continue
-                            }
-
-                        }
-
-                        if (arrayTabuleiro[linha + (direcoes[c][0] * 2)][coluna + (direcoes[c][1] * 2)] == "") {
-
-                            let arrayComerSequencia = comerEmSequencia([linha, coluna], (elemento.classList.contains("normal") ? 'normal' : "dama"), copiarArray(arrayTabuleiro), corPeca)
-
-                            if (arrayComerSequencia.length == 1) {
-                                idCaminhosComerPeca.push(caminhosPossiveis.push([[linha + (direcoes[c][0] * 2), coluna + (direcoes[c][1] * 2)], [[linha + direcoes[c][0], coluna + direcoes[c][1]]]]) - 1)
-                            } else {
-
-                                for (let e = 0; e < arrayComerSequencia.length; e++) {
-                                    idCaminhosComerPeca.push(caminhosPossiveis.push(arrayComerSequencia[e]) - 1)
-                                }
-
-                            }
-
-
-                            continue;
-                        }
-
-
-
 
                     }
+
+
+                    continue;
                 }
 
                 if (arrayTabuleiro[tempLinha][tempColuna] == "") {
-                    caminhosPossiveis.push([[tempLinha, tempColuna], []])
+                    caminhosPossiveis.push([[tempLinha, tempColuna], copiarArray(pecasComidas)])
                 }
 
 
@@ -359,7 +340,6 @@ function fazerMovimento(destino, peca) {
 
     }
 
-    let localizaoPecaNaArray
     if (peca.classList.contains("pecaBranca")) {
 
         if (destino[0][0] == 0) {
@@ -375,12 +355,11 @@ function fazerMovimento(destino, peca) {
         }
 
     }
-
     for (let c = 0; c < destino[1].length; c++) {
 
         arrayTabuleiro[destino[1][c][0]][destino[1][c][1]] = ''
 
-        let local = [destino[1][c][0], destino[1][c][1]]
+        
 
         if (peca.classList.contains("pecaBranca")) {
 
