@@ -15,7 +15,7 @@
     --larguraEspaco: calc(var(--larguraTabuleiro) / 8);
     --larguraTabuleiro: 80svh;
     --corEspacoPreto: #202020;
-    --corEspacoBranco: #d1d1d1;
+    --corEspacoBranco: #d9d9d9;
     --corPecaPreta: black;
     --corPecaBranca: white;
     --corPecaCaminho: rgba(222, 222, 26, 0.77);
@@ -224,21 +224,31 @@ main{
     width: var(--larguraPeca);
     height: var(--larguraPeca);
     border-radius: 50%;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 1);
+    cursor: pointer;
 }
 
 .pecaPreta{
     background-color: var(--corPecaPreta);
-    cursor: pointer;
+    border: 1px solid rgb(158, 158, 158);
 }
 
 .pecaBranca{
     background-color: var(--corPecaBranca);
-    cursor: pointer;
+    border: 1px solid rgb(77, 77, 77);
 }
 
 .caminho{
     background-color: var(--corPecaCaminho);
     cursor: pointer;
+}
+
+.peca.pecaBranca, .peca.pecaPreta{
+    transition: .3s transform ease;
+}
+
+.peca.peca.pecaBranca:hover, .peca.pecaPreta:hover{
+    transform: scale(1.05);
 }
 
 .pecaBranca.dama{
