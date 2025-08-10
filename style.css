@@ -19,6 +19,8 @@
     --corPecaPreta: black;
     --corPecaBranca: white;
     --corPecaCaminho: rgba(222, 222, 26, 0.77);
+    --corPecaPretaInjogavel: #090909;
+    --corPecaBrancaInjogavel: #e0e0e0;
 }
 
 body{
@@ -226,6 +228,7 @@ main{
     border-radius: 50%;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 1);
     cursor: pointer;
+    transition: .3s transform ease, .3s background-color ease;
 }
 
 .pecaPreta{
@@ -241,10 +244,6 @@ main{
 .caminho{
     background-color: var(--corPecaCaminho);
     cursor: pointer;
-}
-
-.peca.pecaBranca, .peca.pecaPreta{
-    transition: .3s transform ease;
 }
 
 .peca.peca.pecaBranca:hover, .peca.pecaPreta:hover{
@@ -267,6 +266,15 @@ main{
 
 .injogavel{
     pointer-events: none;
+    box-shadow: none;
+}
+
+.pecaPreta.injogavel{
+    background-color: var(--corPecaPretaInjogavel);
+}
+
+.pecaBranca.injogavel{
+    background-color: var(--corPecaBrancaInjogavel);
 }
 
 @media (max-width: 600px) {
