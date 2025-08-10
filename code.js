@@ -104,7 +104,6 @@ function iniciarTabuleiro() {
 
 function pecaSelecionada(e) {
     let caminhosPossiveis = mostrarOpcoesMovimento(e.target);
-
     mostrarCaminhosPossiveis(caminhosPossiveis, e.target);
 }
 
@@ -211,8 +210,8 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
             let achouPeca = false
             let pecasComidas = []
             let prePecaComica = []
-            while (tempLinha < 7 && tempLinha >= 0 && tempColuna < 7 && tempColuna >= 0) {
 
+            while (tempLinha < 8 && tempLinha >= 0 && tempColuna < 8 && tempColuna >= 0) {
                 tempLinha += direcoes[c][0]
                 tempColuna += direcoes[c][1]
 
@@ -229,7 +228,6 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
                         continue;
                     }
                 }
-
 
 
                 if (arrayTabuleiro[tempLinha][tempColuna] != "") {
