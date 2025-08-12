@@ -229,17 +229,6 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
                     }
                 }
 
-
-                if (arrayTabuleiro[tempLinha][tempColuna] != "") {
-
-                    // break
-
-                    // Logica de comer da dama
-                    if (arrayTabuleiro[tempLinha][tempColuna].classList.contains(corPeca == "branca" ? "pecaPreta" : "pecaBranca")) {
-                        achouPeca = true
-                        prePecaComica = [tempLinha, tempColuna]
-                    }
-                }
                 if (arrayTabuleiro[tempLinha][tempColuna] == "" && achouPeca) {
                     achouPeca = false
 
@@ -257,7 +246,24 @@ function mostrarOpcoesMovimento(elemento, ignorar = [-1, -1]) {
 
 
                     continue;
+                }else if(achouPeca){
+                    break;
                 }
+
+
+                if (arrayTabuleiro[tempLinha][tempColuna] != "") {
+
+                    // break
+
+                    // Logica de comer da dama
+                    if (arrayTabuleiro[tempLinha][tempColuna].classList.contains(corPeca == "branca" ? "pecaPreta" : "pecaBranca")) {
+                        achouPeca = true
+                        prePecaComica = [tempLinha, tempColuna]
+                    }else{
+                        break
+                    }
+                }
+                
 
                 if (arrayTabuleiro[tempLinha][tempColuna] == "") {
                     caminhosPossiveis.push([[tempLinha, tempColuna], copiarArray(pecasComidas)])
